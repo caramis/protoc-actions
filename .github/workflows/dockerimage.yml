@@ -1,15 +1,16 @@
-name: Docker Image CI
-
+name: protoc-multi-language-actions
 on: [push]
-
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out code into dir
-      uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: docker build -t docker.pkg.github.com/squzy/protoc-actions/protoc:latest .
-    - name: Docker Publish
-      run: docker login docker.pkg.github.com --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.TOKEN }} && docker push docker.pkg.github.com/squzy/protoc-actions/protoc:latest
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
+    - name: Build
+      run: docker build -t docker.pkg.github.com/caramis/protoc-multi-language-actions/protoc:latest .
+    - name: Publish
+      run: |
+        docker login docker.pkg.github.com --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_ACCESS_TOKEN }}
+        docker push docker.pkg.github.com/caramis/protoc-multi-language-actions/protoc:latest
